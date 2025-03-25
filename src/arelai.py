@@ -1,11 +1,15 @@
 from abc import ABC, abstractmethod
 from copy import deepcopy
+import uuid
 import random
 
 class State(ABC):
     """
     Abstract base class representing the state.
     """
+
+    def __init__(self):
+        self._id = uuid.uuid4()
 
     def clone(self):
         """
@@ -14,10 +18,17 @@ class State(ABC):
         """
         return deepcopy(self)
     
+    @property
+    def id(self):
+        return self._id
+    
 class Action(ABC):
     """
     Abstract base class representing an action.
     """
+
+    def __init__(self):
+        self._id = uuid.uuid4()
 
     def clone(self):
         """
@@ -26,11 +37,17 @@ class Action(ABC):
         """
         return deepcopy(self)    
 
+    @property
+    def id(self):
+        return self._id
 
 class Observation(ABC):
     """
     Abstract base class representing an observation of a state.
     """
+
+    def __init__(self):
+        self._id = uuid.uuid4()
 
     def clone(self):
         """
@@ -39,6 +56,10 @@ class Observation(ABC):
         """
         return deepcopy(self)
 
+    @property
+    def id(self):
+        return self._id
+    
 class Player(ABC):
     """
     Abstract base class for a player.
@@ -55,10 +76,16 @@ class Player(ABC):
         Args:
             seed (int): Random seed.
             name (str): The player's name.
+            id (UUID): A unique id for the player.
         """
         self._rng = random.Random(seed)
         self._name = name
+        self._id = uuid.uuid4()
 
+    @property
+    def id(self):
+        return self._id
+    
     @property
     def rng(self):
         return self._rng
@@ -96,7 +123,8 @@ class Player(ABC):
     def clone(self):
         """
         Returns:
-            A deep copy of the observation of the game state.
+            A deep copy of the observation of the game state,
+            but keeps the UUID the same (allows for searching)
         """
         return deepcopy(self)
 
