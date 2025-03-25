@@ -110,7 +110,9 @@ class Game:
         current_state (State): The current state.
     """
     
-    def __init__(self, players: list[Player], initial_state: State):
+    def __init__(self,
+                 players: list[Player],
+                 initial_state: State):
         """
         Initializes the game with the given traders and market.
 
@@ -192,21 +194,28 @@ class Game:
 
 
     @abstractmethod
-    def observe(self, player: Player, state: State) -> Observation:
+    def observe(self,
+                player: Player,
+                state: State) -> Observation:
         """
         Returns an observation of the current state for the current player.
         """
         pass
 
     @abstractmethod
-    def legal_actions(self, player: Player, state: State) -> list[Action]:
+    def legal_actions(self,
+                      player: Player,
+                      state: State) -> list[Action]:
         """
         Returns a list of legal actions for the specified player from the specified state.
         """
         pass
 
     @abstractmethod
-    def apply_action(self, player, state: State, action: Action) -> State:
+    def apply_action(self,
+                     player: Player,
+                     state: State,
+                     action: Action) -> State:
         """
         Applies the specified action by the current player onto the current state,
         and returns the new state.
@@ -214,7 +223,11 @@ class Game:
         pass
 
     @abstractmethod
-    def calculate_reward(self, player: Player, old_state: State, action: Action, new_state: State) -> int:
+    def calculate_reward(self,
+                         player: Player,
+                         old_state: State,
+                         action: Action,
+                         new_state: State) -> float:
         """
         Returns the reward for the specified player.
         """
