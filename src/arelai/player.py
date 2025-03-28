@@ -1,15 +1,14 @@
+
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional, Callable
+
 from abc import ABC, abstractmethod
 from copy import deepcopy
 
-from typing import Optional
-
 import random
-import uuid
-from uuid import UUID
 
-
-from .environment import Observation
-
+if TYPE_CHECKING:
+    from .environment import Observation
 
 class Action(ABC):
     """
@@ -18,19 +17,19 @@ class Action(ABC):
     The Action class provides a base for defining specific actions a player can take.
 
     Attributes:
-        actor_id (UUID): The ID of the player who performs the action.
+        actor (UUID): The ID of the player who performs the action.
     """
 
-    def __init__(self, actor_id: UUID):
+    def __init__(self, actor: Player):
         """
         Initializes the action with the actor's ID.
 
         Args:
-            actor_id (UUID): The UUID of the player who will perform the action.
+            actor (UUID): The UUID of the player who will perform the action.
         """
-        self.actor_id = actor_id
+        self.actor = actor
 
-    def clone(self) -> "Action":
+    def clone(self) -> Action:
         """
         Creates and returns a deep copy of the current action.
 
@@ -86,17 +85,6 @@ class Player(ABC):
         """
         self._rng = random.Random(seed)
         self._name = name
-        self._id = uuid.uuid4()
-
-    @property
-    def id(self) -> UUID:
-        """
-        Returns the player's unique identifier.
-
-        Returns:
-            UUID: The unique ID of the player.
-        """
-        return self._id
     
     @property
     def rng(self) -> random.Random:
@@ -117,15 +105,26 @@ class Player(ABC):
             str: The name of the player.
         """
         return self._name
+    
+    def __eq__(self, other):
+        return self._name == other._name
+    
+    def __hash__(self):
+        return hash(self._name)
 
     @abstractmethod
-    def select_action(self, actions: list[Action], observation: Observation) -> Action:
+    def select_action(self,
+                      actions: list[Action],
+                      observation: Observation,
+                      simulate_action_fnc: Callable[[Action], Observation]) -> Action:
         """
         Selects an action for the player based on the provided legal actions and observation.
 
         Args:
             actions (list[Action]): A list of possible actions the player can take.
             observation (Observation): The current observation of the game state.
+            simulate_action_fnc (Callable[[Action], Observation]): A function that simulates
+            taking an action and returns the resulting observation.
 
         Returns:
             Action: The action selected by the player.
@@ -152,7 +151,7 @@ class Player(ABC):
         """
         pass
 
-    def clone(self) -> "Player":
+    def clone(self) -> Player:
         """
         Creates and returns a deep copy of the current player.
 

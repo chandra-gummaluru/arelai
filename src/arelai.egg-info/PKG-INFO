@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: arelai
-Version: 0.0.6
+Version: 0.0.7
 Summary: A library for creating games and training agents using reinforcement learning.
 Author-email: Chandra Gummaluru <chandra.gummaluru@gmail.com>
 Project-URL: Homepage, https://github.com/chandra-gummaluru/arelai
@@ -47,12 +47,12 @@ class MyPlayer(Player):
     def get_all_actions(self, state: MyState) -> list[MyAction]:
         # Return a list of actions
 
-    def select_action(self, state: MyState) -> list[MyAction]:
+    def select_action(self, list[MyAction], observation: MyObservation, simulate_action_fnc: Callable[[Action], Observation]) -> MyAction:
         # Select an action for the player
 
 class MyGame(Game):
     def log(self):
-        # Define anything you want to log or do after each round
+        # Define anything that should be logged for the round
 
     def terminal(self) -> bool:
         # Define the game-ending condition
@@ -60,10 +60,10 @@ class MyGame(Game):
     def observe(self, player: MyPlayer, state: MyState) -> MyObservation:
         # Return the observation for the player
 
-    def actions(self, player: MyPlayer, state: MyState) -> list[MyAction]:
+    def all_actions(self, player: MyPlayer, state: MyState) -> list[MyAction]:
         # Return all possible actions for the player
 
-    def apply_action(self, state: State, action_profile: dict[UUID, Action]) -> State:
+    def apply_action(self, state: State, action: Action) -> State:
         # Apply the action profile and return the new state
 
     def calculate_reward(self,player: Player, old_state: MyState, action: MyAction, new_state: MyState) -> float:
