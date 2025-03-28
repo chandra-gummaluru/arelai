@@ -35,10 +35,9 @@ class MyPlayer(Player):
     def select_action(self, state: MyState) -> list[MyAction]:
         # Select an action for the player
 
-        
 class MyGame(Game):
-    def output(self) -> str:
-        # Define the output after each turn
+    def log(self):
+        # Define anything you want to log or do after each round
 
     def terminal(self) -> bool:
         # Define the game-ending condition
@@ -46,12 +45,12 @@ class MyGame(Game):
     def observe(self, player: MyPlayer, state: MyState) -> MyObservation:
         # Return the observation for the player
 
-    def legal_actions(self, player: MyPlayer, state: MyState) -> list[MyAction]:
-        # Return legal actions for the player
+    def actions(self, player: MyPlayer, state: MyState) -> list[MyAction]:
+        # Return all possible actions for the player
 
-    def apply_action(self, player: Player, state: MyState, action: list[MyAction]):
-        # Apply the action and return the new state
+    def apply_action(self, state: State, action_profile: dict[UUID, Action]) -> State:
+        # Apply the action profile and return the new state
 
     def calculate_reward(self,player: Player, old_state: MyState, action: MyAction, new_state: MyState) -> float:
-        # Calculate the reward
+        # Calculate the reward from the environment for the player
 ```
